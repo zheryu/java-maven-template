@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.icey7z</groupId>
+    <artifactId>java-maven-template</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <properties>
+        <!-- General Project Properties -->
+        <maven.required.version>3.9.6</maven.required.version>
+        <java.version>21</java.version>
+
+
+        <root.dir>${project.basedir}</root.dir>
+        <root-resource.dir>${root.dir}/src/main/resources</root-resource.dir>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Build Settings -->
+        <!-- Build Settings: Javac - https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html -->
+        <javacWarningOption>-Werror</javacWarningOption>
+        <!-- Build Settings: Errorprone - https://errorprone.info/docs/flags#maven -->
+        <errorProneSettings>
+            <!-- Errorprone: Enable plugin -->
+            <!-- https://errorprone.info/docs/installation#maven -->
+            -Xplugin:ErrorProne
+
+            <!-- Errorprone: Enable desired checks -->
+            <!-- TODO: vet these -->
+            -Xep:AlmostJavadoc:ERROR
+            -Xep:AnnotateFormatMethod:ERROR
+            -Xep:AnnotationPosition:ERROR
+            -Xep:BooleanParameter:ERROR
+            -Xep:ClassName:ERROR
+            -Xep:ComparisonContractViolated:ERROR
+            -Xep:DeduplicateConstants:ERROR
+            -Xep:EmptyBlockTag:ERROR
+            -Xep:FieldCanBeFinal:ERROR
+            -Xep:FieldCanBeLocal:ERROR
+            -Xep:FieldCanBeStatic:ERROR
+            -Xep:Incomparable:ERROR
+            -Xep:InconsistentOverloads:ERROR
+            -Xep:InstantTemporalUnit:ERROR
+            -Xep:InterfaceWithOnlyStatics:ERROR
+            -Xep:InterruptedExceptionSwallowed:ERROR
+            -Xep:InvalidBlockTag:ERROR
+            -Xep:InvalidJavaTimeConstant:ERROR
+            -Xep:InvalidParam:ERROR
+            -Xep:JdkObsolete:ERROR
+            -Xep:JavaLocalDateTimeGetNano:ERROR
+            -Xep:JavaLocalTimeGetNano:ERROR
+            -Xep:JavaPeriodGetDays:ERROR
+            -Xep:LiteEnumValueOf:ERROR
+            -Xep:LocalDateTemporalAmount:ERROR
+            -Xep:LogicalAssignment:ERROR
+            -Xep:LongLiteralLowerCaseSuffix:ERROR
+            -Xep:MethodCanBeStatic:ERROR
+            -Xep:MissingOverride:ERROR
+            -Xep:ModifySourceCollectionInStream:ERROR
+            -Xep:NullableVoid:ERROR
+            -Xep:OptionalNotPresent:ERROR
+            -Xep:OrphanedFormatString:ERROR
+            -Xep:PackageLocation:ERROR
+            -Xep:PreferJavaTimeOverload:ERROR
+            -Xep:PrimitiveAtomicReference:ERROR
+            -Xep:PrivateConstructorForUtilityClass:ERROR
+            -Xep:ReferenceEquality:ERROR
+            -Xep:SameNameButDifferent :ERROR
+            -Xep:SwitchDefault:ERROR
+            -Xep:ThrowsUncheckedException:ERROR
+            -Xep:TransientMisuse:ERROR
+            -Xep:TryFailRefactoring:ERROR
+            -Xep:UnescapedEntity:ERROR
+            -Xep:UnnecessaryAnonymousClass:ERROR
+            -Xep:UnnecessaryBoxedAssignment:ERROR
+            -Xep:UnnecessaryBoxedVariable:ERROR
+            -Xep:UnnecessaryDefaultInEnumSwitch:ERROR
+            -Xep:UnnecessaryStaticImport:ERROR
+            -Xep:UnusedException:ERROR
+            -Xep:XorPower:ERROR
+
+            <!-- Errorprone: Disable broken checks -->
+            -Xep:MissingSummary:OFF
+
+            <!-- Errorprone: Disable useless checks -->
+            -Xep:AndroidJdkLibsChecker:OFF
+            -Xep:Java7ApiChecker:OFF
+            -Xep:Java8ApiChecker:OFF
+            -Xep:StaticOrDefaultInterfaceMethod:OFF
+
+        </errorProneSettings>
+
+        <!-- Build Settings: Other -->
+        <skipTests>true</skipTests>
+        <skipEnforcer>true</skipEnforcer>
+        <skipSpotBugs>true</skipSpotBugs>
+        <skipPmd>true</skipPmd>
+        <skipMacker>true</skipMacker>
+        <skipCheckStyle>true</skipCheckStyle>
+        <skipTidyCheck>true</skipTidyCheck>
+        <skipDependencyScopeCheck>true</skipDependencyScopeCheck>
+        <skipDependencyAnalyze>true</skipDependencyAnalyze>
+        <skipModernizer>true</skipModernizer>
+        <javacWarningOption>-nowarn</javacWarningOption>
+
+
+        <!-- Application Dependency Versions -->
+        <!-- Add yours here -->
+
+
+        <!-- Test Dependency Versions -->
+
+
+        <!-- Plugin Dependency Versions -->
+        <!-- Plugin Dependency Versions: Build -->
+        <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
+
+
+        <!-- Plugin Dependency Versions: Code Quality Checks -->
+        <errorprone.version>2.24.0</errorprone.version>
+        <checkstyle.version></checkstyle.version>
+
+
+        <!-- Plugin Dependency Versions: Maven Enforcer -->
+        <!-- See: https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html -->
+
+
+        <enforcer-rules.version></enforcer-rules.version>
+        <extra-enforcer-rules.version></extra-enforcer-rules.version>
+
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+    </dependencies>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration> <!-- https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html -->
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <release>${java.version}</release>
+                        <encoding>UTF-8</encoding>
+                        <!-- Voodoo: Don't know why this is good to have. -->
+                        <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                        <showWarnings>true</showWarnings>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>com.google.errorprone</groupId>
+                                <artifactId>error_prone_core</artifactId>
+                                <version>${errorprone.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                        <compilerArgs>
+                            <!-- Javac -->
+                            <!-- https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html -->
+                            <!-- Javac: Enable Named Parameters (Voodoo) -->
+                            <arg>-parameters</arg>
+                            <!-- Javac: Strict (More compile-time warnings)-->
+                            <arg>-Xlint:all</arg>
+                            <arg>${javacWarningOption}</arg>
+
+                            <!-- Errorprone Settings -->
+                            <!-- https://errorprone.info/docs/installation#maven -->
+                            <!-- https://errorprone.info/docs/flags#maven -->
+                            <arg>-XDcompilePolicy=simple</arg>
+                            <arg>${errorProneSettings}</arg>
+                            <!-- https://github.com/google/error-prone/issues/1157#issuecomment-769289564 -->
+                            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+                            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+                            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+                            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- Fast -->
+        <!-- For when you just want to build and don't want to worry about code checks -->
+        <profile>
+            <id>fast</id>
+            <activation>
+                <property>
+                    <!-- This profile will be autoenabled in IDEA -->
+                    <name>idea.maven.embedder.version</name>
+                </property>
+            </activation>
+            <properties>
+                <skipTests>true</skipTests>
+                <skipEnforcer>true</skipEnforcer>
+                <skipSpotBugs>true</skipSpotBugs>
+                <skipPmd>true</skipPmd>
+                <skipMacker>true</skipMacker>
+                <skipCheckStyle>true</skipCheckStyle>
+                <skipTidyCheck>true</skipTidyCheck>
+                <skipDependencyScopeCheck>true</skipDependencyScopeCheck>
+                <skipDependencyAnalyze>true</skipDependencyAnalyze>
+                <skipModernizer>true</skipModernizer>
+                <javacWarningOption>-nowarn</javacWarningOption>
+                <errorProneSettings/>
+            </properties>
+        </profile>
+    </profiles>
+</project>
