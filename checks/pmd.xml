@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- See https://docs.pmd-code.org/latest/index.html -->
+<ruleset name="Custom Rules"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+    <description>
+        PMD rules for my project
+    </description>
+
+    <!-- The following example shows how to configure a rule that processes annotations -->
+    <!--    <rule language="java"-->
+    <!--          name="EndpointsDoNotDenyAll"-->
+    <!--          class="net.sourceforge.pmd.lang.rule.XPathRule"-->
+    <!--          message="This endpoint should be removed. `@DenyAll` implies no access, so you should remove it entirely.">-->
+    <!--        <description>-->
+    <!--            Ensures that no endpoints have `@DenyAll`.-->
+    <!--        </description>-->
+    <!--        <properties>-->
+    <!--            <property name="xpath">-->
+    <!--                <value>-->
+    <!--                    <![CDATA[-->
+    <!--                    //ClassOrInterfaceBodyDeclaration[Annotation/MarkerAnnotation/Name/@Image='GET' or-->
+    <!--                                                      Annotation/MarkerAnnotation/Name/@Image='PUT' or-->
+    <!--                                                      Annotation/MarkerAnnotation/Name/@Image='POST' or-->
+    <!--                                                      Annotation/MarkerAnnotation/Name/@Image='DELETE' or-->
+    <!--                                                      Annotation/MarkerAnnotation/Name/@Image='HEAD' or-->
+    <!--                                                      Annotation/MarkerAnnotation/Name/@Image='OPTIONS']-->
+    <!--                                                     [Annotation/MarkerAnnotation/Name/@Image='DenyAll']-->
+
+    <!--                    [not(//ClassOrInterfaceDeclaration[typeIsExactly('some.class.to.exempt')] and-->
+    <!--                    MethodDeclaration/MethodDeclarator[@Image = "exemptedMethod"] and-->
+    <!--                    Annotation/MarkerAnnotation/Name/@Image='GET')]-->
+    <!--                    ]]>-->
+    <!--                </value>-->
+    <!--            </property>-->
+    <!--        </properties>-->
+    <!--        <example>-->
+    <!--            <![CDATA[-->
+    <!--            @GET-->
+    <!--            @DenyAll-->
+    <!--            public String getMySuperSecretThing() {-->
+    <!--                return this.allTheSecrets;-->
+    <!--            }-->
+    <!--            ]]>-->
+    <!--        </example>-->
+    <!--    </rule>-->
+
+    <rule language="java"
+          name="StaticImportFrequentUtilityMethods"
+          class="net.sourceforge.pmd.lang.rule.XPathRule"
+          message="`org.apache.commons.lang3.StringUtils` and `java.util.stream.Collectors` should be statically imported for readability">
+        <description>
+            Ensures that all usages of frequently-used static utility methods should be statically imported for
+            readability.
+        </description>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                    //ImportDeclaration[@Static = 'false']/Name[
+                                        @Image='org.apache.commons.lang3.StringUtils' or
+                                        @Image='java.util.stream.Collectors']
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            import static java.util.stream.Collectors.joining;
+            import static org.apache.commons.lang3.StringUtils.isNotBlank;
+            ]]>
+        </example>
+    </rule>
+
+    <rule language="java"
+          name="JUnit5PackagePrivateTestClasses"
+          class="net.sourceforge.pmd.lang.rule.XPathRule"
+          message="JUnit 5 test classes should be package-private">
+        <description>
+            Ensures that all JUnit 5 test classes are package-private.
+        </description>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                    //ClassOrInterfaceDeclaration[@Interface='false' and @Abstract='false'][@PackagePrivate='false'][ClassOrInterfaceBody/ClassOrInterfaceBodyDeclaration
+                        [MethodDeclaration]
+                        [count(Annotation//Name[
+                               pmd-java:typeIs('org.junit.jupiter.api.Test')
+                            or pmd-java:typeIs('org.junit.jupiter.api.RepeatedTest')
+                            or pmd-java:typeIs('org.junit.jupiter.api.TestFactory')
+                            or pmd-java:typeIs('org.junit.jupiter.api.TestTemplate')
+                            or pmd-java:typeIs('org.junit.jupiter.params.ParameterizedTest')
+
+                            or pmd-java:typeIs('org.junit.jupiter.api.AfterEach')
+                            or pmd-java:typeIs('org.junit.jupiter.api.AfterAll')
+                            or pmd-java:typeIs('org.junit.jupiter.api.BeforeEach')
+                            or pmd-java:typeIs('org.junit.jupiter.api.BeforeAll')]) > 0]]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            class MyTest {
+                @Test
+                testMyTestMethod() {
+                }
+            }
+            ]]>
+        </example>
+    </rule>
+
+    <rule language="java"
+          name="JUnit5PackagePrivateTestMethods"
+          class="net.sourceforge.pmd.lang.rule.XPathRule"
+          message="JUnit 5 test methods should be package-private">
+        <description>
+            Ensures that all JUnit 5 test methods are package-private.
+        </description>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                    //ClassOrInterfaceDeclaration[@Interface='false']/ClassOrInterfaceBody/ClassOrInterfaceBodyDeclaration
+                        [MethodDeclaration[@PackagePrivate='false' and @Protected='false']]
+                        [Annotation//Name[
+                               pmd-java:typeIs('org.junit.jupiter.api.Test')
+                            or pmd-java:typeIs('org.junit.jupiter.api.RepeatedTest')
+                            or pmd-java:typeIs('org.junit.jupiter.api.TestFactory')
+                            or pmd-java:typeIs('org.junit.jupiter.api.TestTemplate')
+                            or pmd-java:typeIs('org.junit.jupiter.params.ParameterizedTest')
+
+                            or pmd-java:typeIs('org.junit.jupiter.api.AfterEach')
+                            or pmd-java:typeIs('org.junit.jupiter.api.AfterAll')
+                            or pmd-java:typeIs('org.junit.jupiter.api.BeforeEach')
+                            or pmd-java:typeIs('org.junit.jupiter.api.BeforeAll')]]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            class MyTest {
+                @Test
+                testMyTestMethod() {
+                }
+            }
+            ]]>
+        </example>
+    </rule>
+
+    <rule language="java"
+          name="StandardLoggerName"
+          class="net.sourceforge.pmd.lang.rule.XPathRule"
+          message="Loggers should be named `LOG`, not `LOGGER`">
+        <description>
+            Ensures that no Loggers are named `LOGGER`
+        </description>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                    //FieldDeclaration[.//ClassOrInterfaceType[@Name='Logger']][.//VariableDeclaratorId[@Name='LOGGER']]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            private static final Logger LOG = LoggerFactory.getLogger(MyClass.class);
+            ]]>
+        </example>
+    </rule>
+
+    <rule language="java"
+          name="FieldInjection"
+          class="net.sourceforge.pmd.lang.rule.XPathRule"
+          message="Please use constructor injection instead. See https://softwareengineering.stackexchange.com/questions/300706/dependency-injection-field-injection-vs-constructor-injection for details.">
+        <description>
+            Ensures we respect testability and encapsulation.
+        </description>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                    //FieldDeclaration/../Annotation/MarkerAnnotation/Name[@Image='Autowired']
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            @Autowired
+            private String myParameter; // bad
+            ]]>
+        </example>
+    </rule>
+
+    <rule ref="category/java/design.xml/UseUtilityClass"/>
+</ruleset>
+

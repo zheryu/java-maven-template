@@ -94,17 +94,17 @@
         </errorProneSettings>
 
         <!-- Build Settings: Other -->
-        <skipTests>true</skipTests>
-        <skipEnforcer>true</skipEnforcer>
-        <skipSpotBugs>true</skipSpotBugs>
-        <skipPmd>true</skipPmd>
-        <skipMacker>true</skipMacker>
-        <skipCheckStyle>true</skipCheckStyle>
-        <skipTidyCheck>true</skipTidyCheck>
-        <skipDependencyScopeCheck>true</skipDependencyScopeCheck>
-        <skipDependencyAnalyze>true</skipDependencyAnalyze>
-        <skipModernizer>true</skipModernizer>
-        <javacWarningOption>-nowarn</javacWarningOption>
+        <skipTests>false</skipTests>
+        <skipEnforcer>false</skipEnforcer>
+        <skipSpotBugs>false</skipSpotBugs>
+        <skipPmd>false</skipPmd>
+        <skipMacker>false</skipMacker>
+        <skipCheckStyle>false</skipCheckStyle>
+        <skipTidyCheck>false</skipTidyCheck>
+        <skipDependencyScopeCheck>false</skipDependencyScopeCheck>
+        <skipDependencyAnalyze>false</skipDependencyAnalyze>
+        <skipModernizer>false</skipModernizer>
+        <javacWarningOption>-Werror</javacWarningOption>
 
 
         <!-- Application Dependency Versions -->
@@ -121,6 +121,7 @@
 
         <!-- Plugin Dependency Versions: Code Quality Checks -->
         <errorprone.version>2.24.0</errorprone.version>
+        <maven-pmd-plugin.version>3.21.2</maven-pmd-plugin.version>
         <checkstyle.version></checkstyle.version>
 
 
@@ -156,7 +157,7 @@
                         <target>${java.version}</target>
                         <release>${java.version}</release>
                         <encoding>UTF-8</encoding>
-                        <!-- Voodoo: Don't know why this is good to have. -->
+                        <!-- Use Javac compiler for -Xlint and other arg options. -->
                         <forceJavacCompilerUse>true</forceJavacCompilerUse>
                         <showWarnings>true</showWarnings>
                         <annotationProcessorPaths>
@@ -193,6 +194,29 @@
                         </compilerArgs>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>${maven-pmd-plugin.version}</version>
+                    <configuration>
+                        <targetJdk>${java.version}</targetJdk>
+                        <rulesets>
+                            <ruleset>${root-resource.dir}/pmd.xml</ruleset>
+                        </rulesets>
+                        <skip>${skipPmd}</skip>
+                        <analysisCache>true</analysisCache>
+                        <linkXRef>false</linkXRef>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <!-- Default phase is `verify`. We would like to run PMD earlier to avoid hte hassle of, for instance, having to go through the integration test phase just to run into PMD errors. -->
+                            <phase>process-test-classes</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -207,7 +231,7 @@
             <id>fast</id>
             <activation>
                 <property>
-                    <!-- This profile will be autoenabled in IDEA -->
+                    <!-- This profile will be auto-enabled in IDEA -->
                     <name>idea.maven.embedder.version</name>
                 </property>
             </activation>
