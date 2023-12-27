@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- See https://jeremylong.github.io/DependencyCheck/general/suppression.html -->
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <!-- Example Suppression -->
+    <!-- Vuln information is available via https://nvd.nist.gov/vuln/detail/CVE-YEAR-ID. -->
+<!--    <suppress>-->
+<!--        <notes>No new package version</notes>-->
+<!--        <packageUrl regex="true">^pkg:maven/com\.icey7z\.project/.*@.*SNAPSHOT$</packageUrl>-->
+<!--        <vulnerabilityName regex="true">.*</vulnerabilityName>-->
+<!--        <cve>CVE-2020-99999</cve>-->
+<!--    </suppress>-->
+</suppressions>

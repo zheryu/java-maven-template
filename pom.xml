@@ -15,7 +15,7 @@
 
 
         <root.dir>${project.basedir}</root.dir>
-        <root-resource.dir>${root.dir}/src/main/resources</root-resource.dir>
+        <code-checks.dir>${root.dir}/checks</code-checks.dir>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -99,7 +99,7 @@
         <skipSpotBugs>false</skipSpotBugs>
         <skipPmd>false</skipPmd>
         <skipMacker>false</skipMacker>
-        <skipCheckStyle>false</skipCheckStyle>
+        <skipCheckstyle>false</skipCheckstyle>
         <skipTidyCheck>false</skipTidyCheck>
         <skipDependencyScopeCheck>false</skipDependencyScopeCheck>
         <skipDependencyAnalyze>false</skipDependencyAnalyze>
@@ -118,17 +118,14 @@
         <!-- Plugin Dependency Versions: Build -->
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
 
-
         <!-- Plugin Dependency Versions: Code Quality Checks -->
         <errorprone.version>2.24.0</errorprone.version>
         <maven-pmd-plugin.version>3.21.2</maven-pmd-plugin.version>
-        <checkstyle.version></checkstyle.version>
+        <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
+        <checkstyle.version>10.12.6</checkstyle.version>
+        <modernizer-maven-plugin.version>2.7.0</modernizer-maven-plugin.version>
 
-
-        <!-- Plugin Dependency Versions: Maven Enforcer -->
         <!-- See: https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html -->
-
-
         <enforcer-rules.version></enforcer-rules.version>
         <extra-enforcer-rules.version></extra-enforcer-rules.version>
 
@@ -201,26 +198,80 @@
                     <configuration>
                         <targetJdk>${java.version}</targetJdk>
                         <rulesets>
-                            <ruleset>${root-resource.dir}/pmd.xml</ruleset>
+                            <ruleset>${code-checks.dir}/pmd.xml</ruleset>
                         </rulesets>
                         <skip>${skipPmd}</skip>
                         <analysisCache>true</analysisCache>
                         <linkXRef>false</linkXRef>
                     </configuration>
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            &lt;!&ndash; Default phase is `verify`. We would like to run PMD earlier to avoid the hassle of, for instance, having to go through the integration test phase just to run into PMD errors. &ndash;&gt;-->
+<!--                            <phase>process-test-classes</phase>-->
+<!--                            <goals>-->
+<!--                                <goal>check</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
+                    <!-- Temporarily disabled for not supporting Java 21 -->
                     <executions>
                         <execution>
-                            <!-- Default phase is `verify`. We would like to run PMD earlier to avoid hte hassle of, for instance, having to go through the integration test phase just to run into PMD errors. -->
-                            <phase>process-test-classes</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
+                            <id>default-compile</id>
+                            <phase>none</phase>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven-checkstyle-plugin.version}</version>
+                    <configuration>
+                        <skip>${skipCheckstyle}</skip>
+                        <!-- Theoretically, we could just declare google_checks.xml here, but copying the checks into a custom file lets us customize or add additional checks on top of the Google checks. -->
+                        <configLocation>${code-checks.dir}/checkstyle.xml</configLocation>
+                        <suppressionsLocation>${code-checks.dir}/checkstyle-suppressions.xml</suppressionsLocation>
+                        <linkXRef>false</linkXRef>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${checkstyle.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.gaul</groupId>
+                    <artifactId>modernizer-maven-plugin</artifactId>
+                    <version>${modernizer-maven-plugin.version}</version>
+                    <configuration>
+                        <skip>${skipModernizer}</skip>
+                        <javaVersion>${java.version}</javaVersion>
+                        <ignoreClassNamePatterns>
+                            <!-- Example -->
+<!--                            <ignoreClassNamePattern>com/icey7z/my/package/Class</ignoreClassNamePattern>-->
+                        </ignoreClassNamePatterns>
+                        <exclusionPatterns>
+                            <!-- Example -->
+<!--                            <exclusionPattern>com\/google\/common\/base\/MoreObjects\.firstNonNull.*</exclusionPattern>-->
+                        </exclusionPatterns>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.gaul</groupId>
+                <artifactId>modernizer-maven-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
 
@@ -241,7 +292,7 @@
                 <skipSpotBugs>true</skipSpotBugs>
                 <skipPmd>true</skipPmd>
                 <skipMacker>true</skipMacker>
-                <skipCheckStyle>true</skipCheckStyle>
+                <skipCheckstyle>true</skipCheckstyle>
                 <skipTidyCheck>true</skipTidyCheck>
                 <skipDependencyScopeCheck>true</skipDependencyScopeCheck>
                 <skipDependencyAnalyze>true</skipDependencyAnalyze>

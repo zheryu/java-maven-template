@@ -49,6 +49,8 @@ When developing your own checks, you can use the [source code for built-in check
 
 ### [PMD](https://maven.apache.org/plugins/maven-pmd-plugin/)
 
+**Currently disabled for not supporting Java 21**
+
 Code analysis tool. Does a lot of what Errorprone does, but is more cumbersome to write. You can write rules using [XPath
 processing](https://docs.pmd-code.org/pmd-doc-7.0.0-rc4/pmd_userdocs_extending_writing_xpath_rules.html) or as 
 [Java rules](https://docs.pmd-code.org/pmd-doc-7.0.0-rc4/pmd_userdocs_extending_writing_java_rules.html).
@@ -56,7 +58,10 @@ processing](https://docs.pmd-code.org/pmd-doc-7.0.0-rc4/pmd_userdocs_extending_w
 In general, I consider PMD a last resort for super niche rules if they can't be done in Errorprone (not that I've found
 an example of this yet).
 
-Configured with the [maven-pmd-plugin](https://maven.apache.org/plugins/maven-pmd-plugin/index.html).
+Configured into the Maven build lifecycle with the [maven-pmd-plugin](https://maven.apache.org/plugins/maven-pmd-plugin/index.html).
+
+All currently configured PMD rules in this project are example rules and can be chucked out if you find
+its enforcement annoying or unnecessary.
 
 #### Cross-Project Rules
 
@@ -77,9 +82,26 @@ dependency of the `maven-pmd-plugin`.
 
 See the [official docs](https://pmd.github.io/pmd/pmd_userdocs_extending_writing_rules_intro.html) for guides on how to write your own rules
 
-### Checkstyle
+### [Checkstyle](https://checkstyle.org/)
 
-### Gaul's Modernizer
+Checkstyle is yet another static analysis tool. However, unlike PMD and Errorprone, Checkstyle is focused on coding style
+conventions. Think of newlines at ends of files, files that are too long, formatting, and naming conventions. I would
+recommend sharing a checkstyle configuration file between projects, and customizing the suppressions between them.
+
+This project uses [Google's style guide](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml).
+
+Configured into the Maven build lifecycle with the [maven-checkstyle-plugin](https://maven.apache.org/plugins/maven-checkstyle-plugin/index.html).
+
+Checkstyle is configured in [checks/checkstyle.xml](checks/checkstyle.xml), and its suppressions are configured in
+[checks/suppressions.xml](checks/checkstyle-suppressions.xml)
+
+
+### [Gaul's Modernizer](https://gaul.github.io/modernizer-maven-plugin/index.html)
+
+[Github](https://github.com/gaul/modernizer-maven-plugin)
+
+Static analysis tool that searches your project for outdated or deprecated libraries and recommends replacements for
+them. For instance, `joda -> java.time` 
 
 ### Tidy Maven POMs
 

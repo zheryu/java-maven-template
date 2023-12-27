@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- See https://spotbugs.readthedocs.io/en/latest/ -->
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.12/spotbugs/etc/findbugsfilter.xsd">
+    <!-- Examples Below -->
+<!--    &lt;!&ndash; Disable certain bugs (often false positives) in JUnit tests &ndash;&gt;-->
+<!--    <Match>-->
+<!--        <Class name="~.*\.*Test(\$.*)?"/>-->
+
+<!--        <Or>-->
+<!--            &lt;!&ndash; http://findbugs.sourceforge.net/bugDescriptions.html#UR_UNINIT_READ &ndash;&gt;-->
+<!--            &lt;!&ndash; This causes issues when using Mockito @Mock / @InjectMocks to initialize things in tests via a runner which FindBugs knows nothing about &ndash;&gt;-->
+<!--            <Bug pattern="UR_UNINIT_READ"/>-->
+
+<!--            &lt;!&ndash; http://findbugs.sourceforge.net/bugDescriptions.html#UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR &ndash;&gt;-->
+<!--            &lt;!&ndash; This causes issues when using JUnit @Before to initialize things in tests which FindBugs knows nothing about &ndash;&gt;-->
+<!--            <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>-->
+
+<!--            &lt;!&ndash; http://findbugs.sourceforge.net/bugDescriptions.html#NP_LOAD_OF_KNOWN_NULL_VALUE &ndash;&gt;-->
+<!--            &lt;!&ndash; This is acceptable since tests pass nulls knowing full well they aren't allowed &ndash;&gt;-->
+<!--            <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>-->
+
+<!--            &lt;!&ndash; http://findbugs.sourceforge.net/bugDescriptions.html#NP_NONNULL_PARAM_VIOLATION &ndash;&gt;-->
+<!--            &lt;!&ndash; This is acceptable since tests pass nulls knowing full well they aren't allowed &ndash;&gt;-->
+<!--            <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>-->
+
+<!--            &lt;!&ndash; http://findbugs.sourceforge.net/bugDescriptions.html#NP_NULL_PARAM_DEREF_NONVIRTUAL &ndash;&gt;-->
+<!--            &lt;!&ndash; This is acceptable since tests pass nulls knowing full well they aren't allowed &ndash;&gt;-->
+<!--            <Bug pattern="NP_NULL_PARAM_DEREF_NONVIRTUAL"/>-->
+
+<!--            &lt;!&ndash; http://findbugs.sourceforge.net/bugDescriptions.html#SIC_INNER_SHOULD_BE_STATIC &ndash;&gt;-->
+<!--            &lt;!&ndash; This is needed for JUnit 5 @Nested classes &ndash;&gt;-->
+<!--            <Bug pattern="SIC_INNER_SHOULD_BE_STATIC"/>-->
+
+<!--            &lt;!&ndash; http://findbugs.sourceforge.net/bugDescriptions.html#DM_GC &ndash;&gt;-->
+<!--            &lt;!&ndash; This is acceptable for benchmarking GC in test code &ndash;&gt;-->
+<!--            <Bug pattern="DM_GC"/>-->
+
+<!--            &lt;!&ndash; http://findbugs.sourceforge.net/bugDescriptions.html#RV_RETURN_VALUE_IGNORED &ndash;&gt;-->
+<!--            &lt;!&ndash; This is acceptable due to https://github.com/joel-costigliola/assertj-core/issues/1298 &ndash;&gt;-->
+<!--            <Bug pattern="RV_RETURN_VALUE_IGNORED"/>-->
+
+<!--            &lt;!&ndash; http://findbugs.sourceforge.net/bugDescriptions.html#RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT &ndash;&gt;-->
+<!--            &lt;!&ndash; This is acceptable due to Mockito's `doReturn(...).when(...).method()` invocation style &ndash;&gt;-->
+<!--            <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>-->
+<!--        </Or>-->
+<!--    </Match>-->
+
+<!--    &lt;!&ndash; Disable certain bugs (often false positives) in all classes &ndash;&gt;-->
+<!--    <Match>-->
+<!--        <Or>-->
+<!--            &lt;!&ndash; http://findbugs.sourceforge.net/bugDescriptions.html#DP_DO_INSIDE_DO_PRIVILEGED &ndash;&gt;-->
+<!--            &lt;!&ndash; Requires doPrivileged block which seems to add little value in our context &ndash;&gt;-->
+<!--            <Bug pattern="DP_DO_INSIDE_DO_PRIVILEGED"/>-->
+
+<!--            &lt;!&ndash; http://findbugs.sourceforge.net/bugDescriptions.html#SIC_INNER_SHOULD_BE_STATIC_ANON &ndash;&gt;-->
+<!--            &lt;!&ndash; Although generally useful, can be limiting for things where an anonymous type literal is convenient (e.g. Jackson, Guava, etc.) &ndash;&gt;-->
+<!--            <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>-->
+<!--        </Or>-->
+<!--    </Match>-->
+</FindBugsFilter>
